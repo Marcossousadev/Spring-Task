@@ -27,7 +27,7 @@ public class TaskController {
     public List<Task> getTasks(@RequestParam(value = "filter", required = false) String filter){
         return taskService.getTasks(filter);
     }
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public String deleteTask(@PathVariable("id") int id){
         return taskService.deleteTask(id);
     }
