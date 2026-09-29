@@ -7,6 +7,7 @@ import lombok.Setter;
 // o lombok cria códigos boilerplate de forma automática pra gente
 @Getter
 @Setter
+@AllArgsConstructor
 public class Task {
     private int id;
     private String titulo;
