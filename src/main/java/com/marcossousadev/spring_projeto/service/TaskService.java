@@ -1,6 +1,7 @@
 package com.marcossousadev.spring_projeto.service;
 
 import com.marcossousadev.spring_projeto.domain.Task;
+import com.marcossousadev.spring_projeto.exceptions.TaskNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -10,24 +11,18 @@ import java.util.List;
 public class TaskService {
     List<Task> tarefas = new ArrayList<>();
 
-    public Task getTask(int id){
-         for(Task task: tarefas) {
-             if(task.getId() == id) {
-                 return task;
-             }
+    public Task getTask(int id) {
+        for (Task task : tarefas) {
+            if (task.getId() == id) {
+                return task;
+            }
         }
-         return null;
+        throw new TaskNotFoundException();
     }
-
     public String postTask(Task task){
-        try {
             tarefas.add(task);
             task.setId(tarefas.size() - 1);
             return "Tarefa criada com sucesso!";
-        }
-        catch (Exception e){
-            return "Erro ao criar tarefa!";
-        }
     }
     public List<Task> getTasks(String filter){
         if(filter == null){
@@ -39,17 +34,17 @@ public class TaskService {
         }
     }
     public String deleteTask(int id){
-        try {
-            tarefas.remove(id);
+            try{
+                tarefas.remove(id);
 
-            for(int i = 0; i < tarefas.size(); i++){
-                tarefas.get(i).setId(i);
+                for(int i = 0; i < tarefas.size(); i++){
+                    tarefas.get(i).setId(i);
+                }
+                return "Tarefa removida com sucesso";
             }
-            return "Tarefa removida com sucesso";
-        }
-        catch (Exception IndexOutOfBoundsException) {
-            return "Erro a deletar task, lista vazia!";
-        }
+            catch (IndexOutOfBoundsException e) {
+                throw new TaskNotFoundException();
+            }
     }
     public String updateStatusTask(int id) {
         try {
@@ -58,8 +53,8 @@ public class TaskService {
             boolean statusTask = task.isStatus();
             return "Task marcada como " + (statusTask ? "finalizada!" : "não finalizada!");
         }
-        catch (Exception IndexOutOfBoundsException) {
-            return "Erro ao atualizar status task, lista vazia!";
+        catch (IndexOutOfBoundsException e) {
+            throw new TaskNotFoundException();
         }
     }
     public String updateDataTask(int id, Task body){
@@ -69,8 +64,8 @@ public class TaskService {
             task.setDescription(body.getDescription());
             return "Task atualizada com sucesso!";
         }
-        catch (Exception IndexOutOfBoundsException) {
-            return "Erro ao atualizar dados da task, lista vazia!";
+        catch (IndexOutOfBoundsException e) {
+            throw new TaskNotFoundException();
         }
     }
 }
