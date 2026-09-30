@@ -38,6 +38,7 @@ public class TaskService {
                 tarefas.remove(id);
 
                 for(int i = 0; i < tarefas.size(); i++){
+
                     tarefas.get(i).setId(i);
                 }
                 return "Tarefa removida com sucesso";
